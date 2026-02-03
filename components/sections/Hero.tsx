@@ -8,7 +8,7 @@ import { analytics } from "@/lib/analytics";
 
 export function Hero() {
   return (
-    <section className="relative min-h-[600px] md:min-h-[700px] flex items-center bg-gradient-to-br from-cpec-blue to-cpec-blue/90 text-white overflow-hidden">
+    <section className="relative min-h-[600px] md:min-h-[700px] flex items-center bg-gradient-to-br from-cpec-blue to-cpec-blue/90 text-white overflow-hidden py-12 md:py-16">
       <div className="container mx-auto px-4 md:px-6 lg:px-8 max-w-7xl relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           <div>
