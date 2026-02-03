@@ -3,6 +3,7 @@ import { Poppins, Montserrat } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { ContactFABs } from "@/components/layout/ContactFABs";
 import { siteMetadata } from "@/content/metadata";
 import Script from "next/script";
 import "./globals.css";
@@ -67,6 +68,7 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        <ContactFABs />
         <Toaster />
         {/* Google Analytics placeholder - replace with your GA4 measurement ID */}
         {process.env.NEXT_PUBLIC_GA_ID && (

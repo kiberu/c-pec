@@ -137,7 +137,7 @@ export default function ContactPage() {
           </div>
 
           {/* Inquiry Form */}
-          <Card className="border-cpec-border">
+          <Card id="contact-form" className="border-cpec-border">
             <CardHeader>
               <CardTitle className="text-2xl text-cpec-blue font-sans">Inquiry Form</CardTitle>
               <CardDescription className="font-body">
