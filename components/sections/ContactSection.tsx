@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Phone, Mail, MessageCircle, MapPin } from "lucide-react";
 import { toast } from "sonner";
+import { submitToWeb3Forms } from "@/lib/web3forms";
 
 export function ContactSection() {
   const [formData, setFormData] = useState({
@@ -16,12 +17,28 @@ export function ContactSection() {
     phone: "",
     message: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Form submission logic would go here
-    toast.success("Thank you! We'll contact you soon.");
-    setFormData({ name: "", phone: "", message: "" });
+    setIsSubmitting(true);
+
+    const result = await submitToWeb3Forms({
+      subject: "Quick Contact - C-PEC Website (Home Page)",
+      from_name: formData.name,
+      name: formData.name,
+      phone: formData.phone,
+      message: formData.message,
+    });
+
+    setIsSubmitting(false);
+
+    if (result.success) {
+      toast.success("Thank you! We'll contact you soon.");
+      setFormData({ name: "", phone: "", message: "" });
+    } else {
+      toast.error(result.message || "Something went wrong. Please try again.");
+    }
   };
 
   return (
@@ -119,8 +136,8 @@ export function ContactSection() {
                   className="border-cpec-border focus:border-cpec-orange focus:ring-cpec-orange/20"
                 />
               </div>
-              <Button type="submit" className="w-full bg-cpec-orange hover:bg-[#b34d00]">
-                Send Message
+              <Button type="submit" disabled={isSubmitting} className="w-full bg-cpec-orange hover:bg-[#b34d00]">
+                {isSubmitting ? "Sending..." : "Send Message"}
               </Button>
             </form>
           </CardContent>

@@ -12,6 +12,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { quoteCopy, ctaBank } from "@/content/copy";
 import { validateQuoteForm, type FormErrors } from "@/lib/validations";
 import { analytics } from "@/lib/analytics";
+import { submitToWeb3Forms } from "@/lib/web3forms";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 
@@ -69,17 +70,29 @@ export default function RequestQuotePage() {
 
     setIsSubmitting(true);
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
-    // Track form submission
-    analytics.trackFormSubmit("quote_request");
-
-    // In a real app, you would send the data to your API here
-    console.log("Form data:", formData);
+    const result = await submitToWeb3Forms({
+      subject: "Quote Request - C-PEC Website",
+      from_name: formData.name,
+      email: formData.email,
+      name: formData.name,
+      phone: formData.phone,
+      company: formData.company,
+      location: formData.location,
+      product_interest: formData.productInterest.join(", "),
+      application_type: formData.applicationType,
+      capacity: formData.capacity,
+      timeline: formData.timeline,
+      message: formData.message,
+    });
 
     setIsSubmitting(false);
-    router.push("/request-quote/thank-you");
+
+    if (result.success) {
+      analytics.trackFormSubmit("quote_request");
+      router.push("/request-quote/thank-you");
+    } else {
+      toast.error(result.message || "Something went wrong. Please try again.");
+    }
   };
 
   return (

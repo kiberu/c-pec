@@ -13,6 +13,7 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { FAQ } from "@/components/sections/FAQ";
 import { analytics } from "@/lib/analytics";
+import { submitToWeb3Forms } from "@/lib/web3forms";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -23,19 +24,39 @@ export default function ContactPage() {
     message: "",
     productInterest: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    analytics.trackFormSubmit("contact");
-    toast.success(contactCopy.form.successMessage);
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      company: "",
-      message: "",
-      productInterest: "",
+    setIsSubmitting(true);
+
+    const result = await submitToWeb3Forms({
+      subject: "Contact Inquiry - C-PEC Website",
+      from_name: formData.name,
+      email: formData.email,
+      name: formData.name,
+      phone: formData.phone,
+      company: formData.company,
+      message: formData.message,
+      product_interest: formData.productInterest,
     });
+
+    setIsSubmitting(false);
+
+    if (result.success) {
+      analytics.trackFormSubmit("contact");
+      toast.success(contactCopy.form.successMessage);
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        company: "",
+        message: "",
+        productInterest: "",
+      });
+    } else {
+      toast.error(result.message || "Something went wrong. Please try again.");
+    }
   };
 
   return (
@@ -205,8 +226,8 @@ export default function ContactPage() {
                     className="border-cpec-border focus:border-cpec-orange focus:ring-cpec-orange/20"
                   />
                 </div>
-                <Button type="submit" className="w-full bg-cpec-orange hover:bg-[#b34d00]">
-                  {contactCopy.form.submitButton}
+                <Button type="submit" disabled={isSubmitting} className="w-full bg-cpec-orange hover:bg-[#b34d00]">
+                  {isSubmitting ? "Sending..." : contactCopy.form.submitButton}
                 </Button>
               </form>
             </CardContent>
