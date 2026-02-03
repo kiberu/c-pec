@@ -46,9 +46,9 @@ export function Header() {
             <Image
               src="/c-pec-assets/logos/light.png"
               alt="C-PEC Logo"
-              width={300}
-              height={80}
-              className="w-[300px] h-20 object-contain"
+              width={200}
+              height={70}
+              className="w-[200px] h-20 object-contain"
               priority
             />
           </Link>

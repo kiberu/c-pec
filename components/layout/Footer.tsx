@@ -22,8 +22,8 @@ export function Footer() {
             <Image
               src="/c-pec-assets/logos/dark.png"
               alt="C-PEC Logo"
-              width={300}
-              height={80}
+              width={200}
+              height={70}
               className="h-16 md:h-20 w-auto"
             />
             <p className="text-sm text-white/80 font-body">
